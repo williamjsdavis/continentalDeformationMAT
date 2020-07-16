@@ -1,5 +1,5 @@
-function [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,...
-                                                alpha,beta,max_steps)
+function [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,alpha,beta,...
+                                       max_steps)
 %Poisson equation solve for velocity
 %   William Davis, 27/11/17
 %
