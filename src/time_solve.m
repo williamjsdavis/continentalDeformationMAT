@@ -32,11 +32,13 @@ Ux = Ux0; Ux_old = Ux0; Ux_new = Ux0;
 Uy = Uy0; Uy_old = Uy0; Uy_new = Uy0;
 S = S0; S_old = S0; S_new = S0;
 
-% Time-stepping
+% Set up Poisson stencils
+[Mx,My] = setup_poisson(Ux,Uy,h,max_steps);
 
+% Time-stepping
 for i = 1:nt
     % Poisson solving (for velocity)
-    [Ux_new,Uy_new,~] = poisson_vel(Ux,Uy,S,h,n,Ar,alpha,beta,max_steps); % New velocities
+    [Ux_new,Uy_new,~] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,alpha,beta,max_steps); % New velocities
 
     % Upwind solving (for thickness)
     S_new = upwind_s(Ux_new,Uy_new,S,h,dt,S_bound); % New thicknesses

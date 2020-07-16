@@ -44,7 +44,7 @@ x_section = [1,4,6,12]; % Where to plot cross sections (change this with grid si
 %x_section = [2,8,16,24]; % Where to plot cross sections (change this with grid size)
 
 % Adding path
-addpath('files')
+addpath('src/')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Setup
