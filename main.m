@@ -1,9 +1,10 @@
 %% Continental Deformation
-%   William Davis, 25/11/17
+%   William Davis, 16/07/20
 %
 %   Notes:
 %   Solves equations for the thin viscous sheet approximation, England and
 %   McKensie 1982 & 1983. 
+%   Updated from previous 25/11/17 work.
 %
 %   Input files:
 %   - 
