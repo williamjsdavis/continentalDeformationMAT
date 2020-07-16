@@ -31,14 +31,15 @@ S_new = S; % New thickness
 stability = dt/(max(abs(Ux(:)))+max(abs(Uy(:))));
 if stability > 1
     dt_suggest = (max(abs(Ux(:)))+max(abs(Uy(:))));
-    error(['Timestep too large. Does not satisfy Courant-Friedrichs-Lewy criterion. Suggestion: Change time-step to ',...
+    error(['Timestep too large. Does not satisfy ',...
+        'Courant-Friedrichs-Lewy criterion. ',...
+        'Suggestion: Change time-step to ',...
         num2str(dt_suggest)])
 end
-%coeff = 1; % Stability criterion (Courant-Friedrichs-Lewy)
-%dt = coeff*(max(abs(Ux(:)))+max(abs(Uy(:)))); % Evaluate timestep
 
 % Center nodes
-S_new(2:end-1,2:end-1) = S_cent - dt/h*(SE_cent.*UxE_cent - SW_cent.*UxW_cent + SN_cent.*UyN_cent - SS_cent.*UyS_cent);
+S_new(2:end-1,2:end-1) = S_cent - dt/h*(SE_cent.*UxE_cent - ...
+    SW_cent.*UxW_cent + SN_cent.*UyN_cent - SS_cent.*UyS_cent);
 
 if strcmp(S_bound,'const') == 1
     M = full(kron(B-I2,B) + kron(I1,I)); % Constant on South boundary

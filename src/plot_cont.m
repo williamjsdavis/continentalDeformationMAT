@@ -32,14 +32,37 @@ cbar3 = cbar(32:64,:);
 
 %% Dimensionalise parameters
 % Properties
-eij_dot = strain_rate(Ux_new,Uy_new,h,1); % Strain rate tensor
-eIso_dot = -(eij_dot{1,1} + eij_dot{2,2}); % Isotropic strain rate
 
-eIso_dot_dim = 1E-6/(365.25*24*60*60)*u0/L*eIso_dot; % Isotropic strain rate [s^-1]
-eij_dot_dim = strain_rate(Ux_new,Uy_new,h,1E-6/(365.25*24*60*60)*u0/L); % Strain rate tensor [s^-1]
-E_dot = sqrt(2)*sqrt(eij_dot{1,1}.^2 + eij_dot{2,2}.^2 + eij_dot{1,2}.^2 + ...
-    eij_dot{1,1}.*eij_dot{2,2}); % Second invariant of the strain rate tensor
-tij_dim = strain_rate(Ux_new,Uy_new,h,1*g*pc*L*(1-pc/pm)/Ar*E_dot.^(1/n-1)); % Deviatoric stress tensor [MPa]
+% Strain rate tensor
+[e11_dot,e12_dot,e21_dot,e22_dot] = strain_rate(Ux_new,Uy_new,h,1);
+
+% Isotropic strain rate
+eIso_dot = -(e11_dot + e22_dot); 
+
+% Isotropic strain rate [s^-1]
+eIso_dot_dim = 1E-6/(365.25*24*60*60)*u0/L*eIso_dot; 
+
+% Second invariant of the strain rate tensor
+E_dot = sqrt(2)*sqrt(e11_dot.^2 + e22_dot.^2 + e12_dot.^2 + ...
+    e11_dot.*e22_dot); 
+
+% Deviatoric stress tensor [MPa]
+[t11_dim,t12_dim,t21_dim,t22_dim] = ...
+    strain_rate(Ux_new,Uy_new,h,1*g*pc*L*(1-pc/pm)/Ar*E_dot.^(1/n-1)); 
+tij_dim = cell(2);
+tij_dim{1,1} = t11_dim;
+tij_dim{1,2} = t12_dim;
+tij_dim{2,1} = t21_dim;
+tij_dim{2,2} = t22_dim;
+
+% Strain rate tensor [s^-1]
+[e11_dot_dim,e12_dot_dim,e21_dot_dim,e22_dot_dim] = ...
+    strain_rate(Ux_new,Uy_new,h,1E-6/(365.25*24*60*60)*u0/L); 
+eij_dot_dim = cell(2);
+eij_dot_dim{1,1} = e11_dot_dim;
+eij_dot_dim{1,2} = e12_dot_dim;
+eij_dot_dim{2,1} = e21_dot_dim;
+eij_dot_dim{2,2} = e22_dot_dim;
 
 %% Plotting
 figure('Position',[204,140,1237,665])
