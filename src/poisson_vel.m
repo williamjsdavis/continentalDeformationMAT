@@ -36,7 +36,6 @@ Ux_new = Ux;
 Uy_new = Uy;
 
 %% Iteration steps
-
 p_step = 0; % Initialize step counter
 while beta_curr > beta % Run until solution converges
     

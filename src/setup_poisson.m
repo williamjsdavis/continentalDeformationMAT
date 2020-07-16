@@ -1,4 +1,4 @@
-function [ Mx,My ] = setup_poisson( Ux,Uy,h,max_steps )
+function [ Mx,My ] = setup_poisson( Nx,h )
 %Poisson equation solve for velocity
 %   William Davis, 16/07/20
 %
@@ -24,9 +24,6 @@ function [ Mx,My ] = setup_poisson( Ux,Uy,h,max_steps )
 %   Problems:
 %   - % Neumann condition on Uy West boundary (check line 135)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% Parameters
-Nx = length(Ux); % Number of nodes on one direction
 
 %%% Form sparse matrices
 % Identity matrices

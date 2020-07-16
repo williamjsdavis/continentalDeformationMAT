@@ -33,7 +33,8 @@ Uy = Uy0; Uy_old = Uy0; Uy_new = Uy0;
 S = S0; S_old = S0; S_new = S0;
 
 % Set up Poisson stencils
-[Mx,My] = setup_poisson(Ux,Uy,h,max_steps);
+Nx = length(Ux); % Number of nodes on one direction
+[Mx,My] = setup_poisson(Nx,h);
 
 % Time-stepping
 for i = 1:nt
