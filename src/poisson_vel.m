@@ -1,4 +1,5 @@
-function [ Ux_new,Uy_new,beta_arr ] = poisson_vel( Ux,Uy,Mx,My,S,h,n,Ar,alpha,beta,max_steps )
+function [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,...
+                                                alpha,beta,max_steps)
 %Poisson equation solve for velocity
 %   William Davis, 27/11/17
 %
@@ -24,88 +25,71 @@ function [ Ux_new,Uy_new,beta_arr ] = poisson_vel( Ux,Uy,Mx,My,S,h,n,Ar,alpha,be
 %   - % Neumann condition on Uy West boundary (check line 135)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Preallocate convergence metrics
+% Preallocate
 beta_arr = nan(max_steps,2); % Array to put convergence metric for each step
-beta_curr = 1; % Current convergence value
-
 Ux_old = Ux;
 Uy_old = Uy;
 Ux_p  = Ux;
 Uy_p  = Uy;
-Ux_new = Ux;
-Uy_new = Uy;
 
 %% Iteration steps
-p_step = 0; % Initialize step counter
+%%% Step 1
+p_step = 1; % Initialize step counter
+
+% Setting up RHS
+RHS_x = Ux; % X-direction
+RHS_y = Uy; % Y-direction
+RHS_x(2:end-1,2:end-1) = 0; % Set as 0
+RHS_y(2:end-1,2:end-1) = 0; % Y-direction
+
+%%% Solving inverse problems
+[Ux_p,Uy_p] = solveVelocity(Ux_p,Uy_p,Mx,My,RHS_x,RHS_y,Ux_old,Uy_old);
+
+% Combined with previous solutions for velocity
+Ux_new = Ux_p; % If only one step
+Uy_new = Uy_p; % I.e. first and final step
+
+% Reassigning velocities
+Ux_old = Ux; 
+Uy_old = Uy;
+Ux = Ux_new;
+Uy = Uy_new;
+
+% Convergence metric
+% beta_arr(p_step,1) = max(Ux_new(:)-Ux_old(:))/max(Ux_old(:)); % X velocity
+% beta_arr(p_step,2) = max(Uy_new(:)-Uy_old(:))/max(Uy_old(:)); % Y velocity
+% beta_curr = max(beta_arr(p_step,:)); % Maximum of either convergence metric
+[beta_arr(p_step,:),beta_curr] = convergenceMetric(Ux_new,Uy_new,Ux_old,Uy_old);
+
 while beta_curr > beta % Run until solution converges
     
     p_step = p_step + 1; % Step counter
     
-    %%% Parameters from velocity
     % Strain rate tensor
     [e11_dot,e12_dot,e21_dot,e22_dot] = strain_rate(Ux,Uy,h,1);
     
-    % Second invariant of the strain rate tensor
-    E_dot = sqrt(2)*sqrt(e11_dot.^2 + e22_dot.^2 + ...
-        e12_dot.^2 + e11_dot.*e22_dot);
-    
     %%% Setting up RHS (note: RHS only contains interior points)
-    if p_step == 1
-        RHS_x = Ux; % X-direction
-        RHS_y = Uy; % Y-direction
-        RHS_x(2:end-1,2:end-1) = 0; % Set as 0
-        RHS_y(2:end-1,2:end-1) = 0; % Y-direction
-    else
-        % X-direction
-        RHS_x = - 3*gradient(gradient(Ux',h),h)' - 3*gradient(gradient(Uy',h)',h) + 2*(1-1/n)*E_dot.^(-1).*...
-            (e11_dot.*gradient(E_dot',h)' + e12_dot.*gradient(E_dot,h) + ...
-            (gradient(Ux',h)' + gradient(Uy,h)).*(gradient(E_dot',h)' + gradient(E_dot,h))) + ...
-            Ar*E_dot.^(1-1/n).*S.*gradient(S',h)';
-        % Y-direction
-        RHS_y = - 3*gradient(gradient(Uy,h),h) - 3*gradient(gradient(Ux',h)',h) + 2*(1-1/n)*E_dot.^(-1).*...
-            (e21_dot.*gradient(E_dot',h)' + e22_dot.*gradient(E_dot,h) + ...
-            (gradient(Ux',h)' + gradient(Uy,h)).*(gradient(E_dot',h)' + gradient(E_dot,h))) + ...
-            Ar*E_dot.^(1-1/n).*S.*gradient(S,h);
-    end
+    [RHS_x,RHS_y] = calculateRHS(Ux,Uy,S,e11_dot,e12_dot,e21_dot,...
+        e22_dot,h,n,Ar);
     
     %%% Solving inverse problems
-    Ux_p(:) = Mx\RHS_x(:); % Solutions of the poisson equation
-    Uy_p(:) = My\RHS_y(:); % 
-    
-    Ux_p(:,end) = Ux_old(:,end); % North boundary (Dirichlet)
-    Ux_p(:,1) = Ux_old(:,1); % South boundary (Dirichlet)
-    Ux_p(end,:) = Ux_old(end,:); % East Boundary (Dirichlet)
-    Ux_p(1,:) = Ux_old(1,:); % West Boundary (Dirichlet)
-    
-    Uy_p(1,:) = 1/3*(4*Uy_p(2,:)-Uy_p(3,:)); % West Boundary (Neumann)
-    Uy_p(:,end) = Uy_old(:,end); % North boundary (Dirichlet)
-    Uy_p(:,1) = Uy_old(:,1); % South boundary (Dirichlet)
-    Uy_p(end,:) = Uy_old(end,:); % East Boundary (Dirichlet)
-    
-    Ux_old = Ux; % Reassigning velocities
-    Uy_old = Uy;
+    [Ux_p,Uy_p] = solveVelocity(Ux_p,Uy_p,Mx,My,RHS_x,RHS_y,Ux_old,Uy_old);
 
     % Combined with previous solutions for velocity
-    if p_step == 1
-        Ux_new = Ux_p; % If only one step
-        Uy_new = Uy_p; % I.e. first and final step
-    else
-        Ux_new = alpha.*Ux_p + (1 - alpha).*Ux_old; % Stability condition
-        Uy_new = alpha.*Uy_p + (1 - alpha).*Uy_old; % Intermediate step
-    end
+    Ux_new = alpha.*Ux_p + (1 - alpha).*Ux;
+    Uy_new = alpha.*Uy_p + (1 - alpha).*Uy;
     
     % Reassigning velocities
+    Ux_old = Ux;
+    Uy_old = Uy;
     Ux = Ux_new;
     Uy = Uy_new;
     
     % Convergence metric
-    beta_arr(p_step,1) = max(Ux_new(:)-Ux_old(:))/max(Ux_old(:)); % Convergence metric, X velocity
-    beta_arr(p_step,2) = max(Uy_new(:)-Uy_old(:))/max(Uy_old(:)); % Y velocity
-    beta_curr = max(beta_arr(p_step,:)); % Maximum of either convergence metric
+    [beta_arr(p_step,:),beta_curr] = convergenceMetric(Ux_new,Uy_new,Ux_old,Uy_old);
     
     % Iteration limit
     if p_step > max_steps % Setting limit on number of steps
-        beta_curr = beta;
         figure % Plot failure of convergence
         hold on
         plot(1:max_steps,log10(max(beta_arr,[],2)))
@@ -118,13 +102,51 @@ while beta_curr > beta % Run until solution converges
     end
 end
 end
+function [RHS_x,RHS_y] = calculateRHS(Ux,Uy,S,e11_dot,e12_dot,e21_dot,...
+                                      e22_dot,h,n,Ar)
+%% Setting up RHS (note: RHS only contains interior points)
+% Second invariant of the strain rate tensor
+E_dot = sqrt(2)*sqrt(e11_dot.^2 + e22_dot.^2 + ...
+    e12_dot.^2 + e11_dot.*e22_dot);
 
-%         RHS_x = - 3*del__g(Ux,h,'xx') - 3*del__g(Uy,h,'xy') + 2*(1-1/n)*E_dot.^(-1).*...
-%             (eij_dot{1,1}.*del__g(E_dot,h,'x') + eij_dot{1,2}.*del__g(E_dot,h,'y') + ...
-%             (del__g(Ux,h,'x') + del__g(Uy,h,'y')).*(del__g(E_dot,h,'x') + del__g(E_dot,h,'y'))) + ...
-%             Ar*E_dot.^(1-1/n).*S.*del__g(S,h,'x');
-%         % Y-direction
-%         RHS_y = - 3*del__g(Uy,h,'yy') - 3*del__g(Ux,h,'xy') + 2*(1-1/n)*E_dot.^(-1).*...
-%             (eij_dot{2,1}.*del__g(E_dot,h,'x') + eij_dot{2,2}.*del__g(E_dot,h,'y') + ...
-%             (del__g(Ux,h,'x') + del__g(Uy,h,'y')).*(del__g(E_dot,h,'x') + del__g(E_dot,h,'y'))) + ...
-%             Ar*E_dot.^(1-1/n).*S.*del__g(S,h,'y');
+% X-direction
+RHS_x = - 3*gradient(gradient(Ux',h),h)' ...
+        - 3*gradient(gradient(Uy',h)',h) ...
+        + 2*(1-1/n)*E_dot.^(-1).*(e11_dot.*gradient(E_dot',h)' ...
+        + e12_dot.*gradient(E_dot,h) ...
+        + (gradient(Ux',h)' ...
+        + gradient(Uy,h)).*(gradient(E_dot',h)' ...
+        + gradient(E_dot,h))) ...
+        + Ar*E_dot.^(1-1/n).*S.*gradient(S',h)';
+% Y-direction
+RHS_y = - 3*gradient(gradient(Uy,h),h) ...
+        - 3*gradient(gradient(Ux',h)',h) ...
+        + 2*(1-1/n)*E_dot.^(-1).*(e21_dot.*gradient(E_dot',h)' ...
+        + e22_dot.*gradient(E_dot,h) ...
+        + (gradient(Ux',h)' ...
+        + gradient(Uy,h)).*(gradient(E_dot',h)' ...
+        + gradient(E_dot,h))) ...
+        + Ar*E_dot.^(1-1/n).*S.*gradient(S,h);
+end
+function [Ux_p,Uy_p] = solveVelocity(Ux_p,Uy_p,Mx,My,RHS_x,RHS_y,...
+                                     Ux_old,Uy_old)
+%% Solving inverse problem for velocity field
+Ux_p(:) = Mx\RHS_x(:); % Solutions of the poisson equation
+Uy_p(:) = My\RHS_y(:); %
+
+Ux_p(:,end) = Ux_old(:,end); % North boundary (Dirichlet)
+Ux_p(:,1) = Ux_old(:,1); % South boundary (Dirichlet)
+Ux_p(end,:) = Ux_old(end,:); % East Boundary (Dirichlet)
+Ux_p(1,:) = Ux_old(1,:); % West Boundary (Dirichlet)
+
+Uy_p(1,:) = 1/3*(4*Uy_p(2,:)-Uy_p(3,:)); % West Boundary (Neumann)
+Uy_p(:,end) = Uy_old(:,end); % North boundary (Dirichlet)
+Uy_p(:,1) = Uy_old(:,1); % South boundary (Dirichlet)
+Uy_p(end,:) = Uy_old(end,:); % East Boundary (Dirichlet)
+end
+function [beta_arr,beta_curr] = convergenceMetric(Ux_new,Uy_new,Ux_old,Uy_old)
+% Calculate convergence metric
+beta_arr(2) = max(Uy_new(:)-Uy_old(:))/max(Uy_old(:)); % Y velocity
+beta_arr(1) = max(Ux_new(:)-Ux_old(:))/max(Ux_old(:)); % X velocity
+beta_curr = max(beta_arr); % Maximum of either convergence metric
+end

@@ -39,7 +39,7 @@ Nx = length(Ux); % Number of nodes on one direction
 % Time-stepping
 for i = 1:nt
     % Poisson solving (for velocity)
-    [Ux_new,Uy_new,~] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,alpha,beta,max_steps); % New velocities
+    [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,alpha,beta,max_steps); % New velocities
 
     % Upwind solving (for thickness)
     S_new = upwind_s(Ux_new,Uy_new,S,h,dt,S_bound); % New thicknesses
