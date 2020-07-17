@@ -59,7 +59,8 @@ Sy_EW(1,3) = 1/4; % Add West Neumann boundary
 Sy_EW(Nx,Nx) = h^2; % Add for East Dirichlet boundary (*)
 Sy_EW(Nx,Nx-1) = 0; % Remove for East Dirichlet boundary
 
-% (*) Will be replaced later so can be any number, but set to h^2 for ease of identification.
+% (*) Will be replaced later so can be any number, but set to h^2 for ease 
+% of identification.
 
 % Kronecker tensor products
 Mx_NS = kron(B_NS,Sx_NS); % Matrix for North and South stencil dependency
@@ -71,7 +72,10 @@ My_EW = kron(B_EW,Sy_EW); % Matrix for East and West stencil dependency
 My_NSB = kron(B_NSB,Sy_NSB); % Matrix for North and South boundaries
 
 % Full sparse matrices
-Mx = (Mx_NS+Mx_EW+Mx_NSB)/h^2; % Add all to form sparse matrix for Ux (spA_x)
-My = (My_NS+My_EW+My_NSB)/h^2; % Add all to form sparse matrix for Uy (spA_y)
+Mxx = (Mx_NS+Mx_EW+Mx_NSB)/h^2; % Add all to form sparse matrix for Ux (spA_x)
+Myy = (My_NS+My_EW+My_NSB)/h^2; % Add all to form sparse matrix for Uy (spA_y)
 
+% LU decomposition
+[Mx.L,Mx.U,Mx.P] = lu(Mxx);
+[My.L,My.U,My.P] = lu(Myy);
 end

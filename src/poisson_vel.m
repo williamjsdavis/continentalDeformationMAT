@@ -56,9 +56,6 @@ Ux = Ux_new;
 Uy = Uy_new;
 
 % Convergence metric
-% beta_arr(p_step,1) = max(Ux_new(:)-Ux_old(:))/max(Ux_old(:)); % X velocity
-% beta_arr(p_step,2) = max(Uy_new(:)-Uy_old(:))/max(Uy_old(:)); % Y velocity
-% beta_curr = max(beta_arr(p_step,:)); % Maximum of either convergence metric
 [beta_arr(p_step,:),beta_curr] = convergenceMetric(Ux_new,Uy_new,Ux_old,Uy_old);
 
 while beta_curr > beta % Run until solution converges
@@ -109,40 +106,46 @@ function [RHS_x,RHS_y] = calculateRHS(Ux,Uy,S,e11_dot,e12_dot,e21_dot,...
 E_dot = sqrt(2)*sqrt(e11_dot.^2 + e22_dot.^2 + ...
     e12_dot.^2 + e11_dot.*e22_dot);
 
+% Gradients
+[UyDy,~] = gradient(Uy,h); % UyDx
+[~,UxDx] = gradient(Ux,h); % UxDy
+
+[UyDyy,UyDyx] = gradient(UyDy,h);
+%[UyDxy,UyDxx] = gradient(UyDx,h);
+[UxDxy,UxDxx] = gradient(UxDx,h);
+%[UxDyy,UxDyx] = gradient(UxDy,h);
+
+[E_dotDy,E_dotDx] = gradient(E_dot,h);
+[SDy,SDx] = gradient(S,h);
+
 % X-direction
-RHS_x = - 3*gradient(gradient(Ux',h),h)' ...
-        - 3*gradient(gradient(Uy',h)',h) ...
-        + 2*(1-1/n)*E_dot.^(-1).*(e11_dot.*gradient(E_dot',h)' ...
-        + e12_dot.*gradient(E_dot,h) ...
-        + (gradient(Ux',h)' ...
-        + gradient(Uy,h)).*(gradient(E_dot',h)' ...
-        + gradient(E_dot,h))) ...
-        + Ar*E_dot.^(1-1/n).*S.*gradient(S',h)';
+RHS_x = - 3*UxDxx - 3*UyDyx + 2*(1-1/n)*E_dot.^(-1).*(e11_dot.*E_dotDx ...
+        + e12_dot.*E_dotDy + (UxDx + UyDy).*(E_dotDx + E_dotDy)) ...
+        + Ar*E_dot.^(1-1/n).*S.*SDx;
 % Y-direction
-RHS_y = - 3*gradient(gradient(Uy,h),h) ...
-        - 3*gradient(gradient(Ux',h)',h) ...
-        + 2*(1-1/n)*E_dot.^(-1).*(e21_dot.*gradient(E_dot',h)' ...
-        + e22_dot.*gradient(E_dot,h) ...
-        + (gradient(Ux',h)' ...
-        + gradient(Uy,h)).*(gradient(E_dot',h)' ...
-        + gradient(E_dot,h))) ...
-        + Ar*E_dot.^(1-1/n).*S.*gradient(S,h);
+RHS_y = - 3*UyDyy - 3*UxDxy + 2*(1-1/n)*E_dot.^(-1).*(e21_dot.*E_dotDx ...
+        + e22_dot.*E_dotDy + (UxDx + UyDy).*(E_dotDx + E_dotDy)) ...
+        + Ar*E_dot.^(1-1/n).*S.*SDy;
 end
 function [Ux_p,Uy_p] = solveVelocity(Ux_p,Uy_p,Mx,My,RHS_x,RHS_y,...
                                      Ux_old,Uy_old)
 %% Solving inverse problem for velocity field
-Ux_p(:) = Mx\RHS_x(:); % Solutions of the poisson equation
-Uy_p(:) = My\RHS_y(:); %
+% Solutions of the poisson equation (LU)
+Ux_p(:) = Mx.U\(Mx.L\(Mx.P*RHS_x(:))); 
+Uy_p(:) = My.U\(My.L\(My.P*RHS_y(:))); 
 
-Ux_p(:,end) = Ux_old(:,end); % North boundary (Dirichlet)
-Ux_p(:,1) = Ux_old(:,1); % South boundary (Dirichlet)
-Ux_p(end,:) = Ux_old(end,:); % East Boundary (Dirichlet)
-Ux_p(1,:) = Ux_old(1,:); % West Boundary (Dirichlet)
+% Boundaries (all Dirichlet)
+Ux_p(:,end) = Ux_old(:,end); % North
+Ux_p(:,1) = Ux_old(:,1); % South
+Ux_p(end,:) = Ux_old(end,:); % East 
+Ux_p(1,:) = Ux_old(1,:); % West 
 
-Uy_p(1,:) = 1/3*(4*Uy_p(2,:)-Uy_p(3,:)); % West Boundary (Neumann)
-Uy_p(:,end) = Uy_old(:,end); % North boundary (Dirichlet)
-Uy_p(:,1) = Uy_old(:,1); % South boundary (Dirichlet)
-Uy_p(end,:) = Uy_old(end,:); % East Boundary (Dirichlet)
+Uy_p(:,end) = Uy_old(:,end); % North 
+Uy_p(:,1) = Uy_old(:,1); % South 
+Uy_p(end,:) = Uy_old(end,:); % East 
+
+% West Boundary (Neumann)
+Uy_p(1,:) = 1/3*(4*Uy_p(2,:)-Uy_p(3,:)); 
 end
 function [beta_arr,beta_curr] = convergenceMetric(Ux_new,Uy_new,Ux_old,Uy_old)
 % Calculate convergence metric
