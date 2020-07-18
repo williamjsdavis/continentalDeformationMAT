@@ -11,8 +11,16 @@
 %   - No scale for tensor plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Settings
+save_figure = 0; % Save figure?
+filename = strcat('Ar',num2str(Ar),'n',num2str(n),'t',num2str(nt)); % File to save as
+cbar_range1 = 1E-15*[-2,20]; % Minimum and maximum isotropic strain rates (chosen) [s^-1]
+cbar_range2 = [20,65]; % Minimum and maximum thicknesses (chosen) [km]
+x_section = [1,4,6,12]; % Where to plot cross sections (change this with grid size)
+%x_section = [2,8,16,24]; % Where to plot cross sections (change this with grid size)
+
 % Colourbars
-cbar = redblue; % Set colourbar to red/blue
+cbar = redblue(); % Set colourbar to red/blue
 
 % Isotropic strain rate colourbar
 cbar_coeff = (0-cbar_range1(1))/(cbar_range1(2)-cbar_range1(1)); % Colourbar coeficient

@@ -11,15 +11,8 @@ function [ Mx,My ] = setup_poisson( Nx,h )
 %   Assumes gris spaces dx=dy=h.
 %
 %   Inputs:
-%   - "Ux"                      Velocity in x-direction, []
-%   - "Uy"                      Velocity in y-direction, []
-%   - "S"                       Crustal thickness, []
-%   - "h"                       Spatial grid size
-%   - "n"                       Power law rheology
-%   - "Ar"                      Argand number
-%   - "alpha"                   Stability criterion, ~10E-2
-%   - "beta"                    Convergence criterion, ~10E-3
-%   - "max_steps"               Maximum number of iteration steps
+%   - "Nx"                      Number of grid points, []
+%   - "h"                       Spatial grid size, []
 %
 %   Problems:
 %   - % Neumann condition on Uy West boundary (check line 135)

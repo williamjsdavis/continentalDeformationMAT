@@ -5,6 +5,7 @@ function c = redblue(m)
 %   blue to white, and then through shades of red to bright red.
 %   REDBLUE, by itself, is the same length as the current figure's
 %   colormap. If no figure exists, MATLAB creates one.
+%   17/07/20, William Davis: Edited to stop creating new figure.
 %
 %   For example, to reset the colormap of the current figure:
 %
@@ -15,8 +16,8 @@ function c = redblue(m)
 
 %   Adam Auton, 9th October 2009
 
-if nargin < 1, m = size(get(gcf,'colormap'),1); end
-
+%if nargin < 1, m = size(get(gcf,'colormap'),1); end
+m=64;
 if (mod(m,2) == 0)
     % From [0 0 1] to [1 1 1], then [1 1 1] to [1 0 0];
     m1 = m*0.5;

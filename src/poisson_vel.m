@@ -1,5 +1,4 @@
-function [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,alpha,beta,...
-                                       max_steps)
+function [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,poisson_set)
 %Poisson equation solve for velocity
 %   William Davis, 27/11/17
 %
@@ -17,16 +16,17 @@ function [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,alpha,beta,...
 %   - "h"                       Spatial grid size
 %   - "n"                       Power law rheology
 %   - "Ar"                      Argand number
-%   - "alpha"                   Stability criterion, ~10E-2
-%   - "beta"                    Convergence criterion, ~10E-3
-%   - "max_steps"               Maximum number of iteration steps
+%   - "poisson_set"             Poisson solver settings
+%       - "alpha"                   Stability criterion, ~10E-2
+%       - "beta"                    Convergence criterion, ~10E-3
+%       - "max_steps"               Maximum number of iteration steps
 %
 %   Problems:
 %   - % Neumann condition on Uy West boundary (check line 135)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Preallocate
-beta_arr = nan(max_steps,2); % Array to put convergence metric for each step
+beta_arr = nan(poisson_set.max_steps,2); % Convergence metric
 Ux_old = Ux;
 Uy_old = Uy;
 Ux_p  = Ux;
@@ -55,10 +55,9 @@ Uy_old = Uy;
 Ux = Ux_new;
 Uy = Uy_new;
 
-% Convergence metric
 [beta_arr(p_step,:),beta_curr] = convergenceMetric(Ux_new,Uy_new,Ux_old,Uy_old);
 
-while beta_curr > beta % Run until solution converges
+while beta_curr > poisson_set.beta % Run until solution converges
     
     p_step = p_step + 1; % Step counter
     
@@ -73,8 +72,8 @@ while beta_curr > beta % Run until solution converges
     [Ux_p,Uy_p] = solveVelocity(Ux_p,Uy_p,Mx,My,RHS_x,RHS_y,Ux_old,Uy_old);
 
     % Combined with previous solutions for velocity
-    Ux_new = alpha.*Ux_p + (1 - alpha).*Ux;
-    Uy_new = alpha.*Uy_p + (1 - alpha).*Uy;
+    Ux_new = poisson_set.alpha.*Ux_p + (1 - poisson_set.alpha).*Ux;
+    Uy_new = poisson_set.alpha.*Uy_p + (1 - poisson_set.alpha).*Uy;
     
     % Reassigning velocities
     Ux_old = Ux;
@@ -86,11 +85,11 @@ while beta_curr > beta % Run until solution converges
     [beta_arr(p_step,:),beta_curr] = convergenceMetric(Ux_new,Uy_new,Ux_old,Uy_old);
     
     % Iteration limit
-    if p_step > max_steps % Setting limit on number of steps
+    if p_step > poisson_set.max_steps % Setting limit on number of steps
         figure % Plot failure of convergence
         hold on
         plot(1:max_steps,log10(max(beta_arr,[],2)))
-        plot(xlim,log10([beta,beta]),'r--')
+        plot(xlim,log10(poisson_set.beta.*[1,1]),'r--')
         title(['Convergence metric, \beta = 10^{',num2str(log10(beta)),'}'])
         xlabel('Iteration number')
         ylabel('Convergence parameter, log(\beta)')
