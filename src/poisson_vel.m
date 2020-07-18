@@ -106,16 +106,16 @@ E_dot = sqrt(2)*sqrt(e11_dot.^2 + e22_dot.^2 + ...
     e12_dot.^2 + e11_dot.*e22_dot);
 
 % Gradients
-[UyDy,~] = gradient(Uy,h); % UyDx
-[~,UxDx] = gradient(Ux,h); % UxDy
+[UyDy,~] = myGradient(Uy,h); % UyDx
+[~,UxDx] = myGradient(Ux,h); % UxDy
 
-[UyDyy,UyDyx] = gradient(UyDy,h);
+[UyDyy,UyDyx] = myGradient(UyDy,h);
 %[UyDxy,UyDxx] = gradient(UyDx,h);
-[UxDxy,UxDxx] = gradient(UxDx,h);
+[UxDxy,UxDxx] = myGradient(UxDx,h);
 %[UxDyy,UxDyx] = gradient(UxDy,h);
 
-[E_dotDy,E_dotDx] = gradient(E_dot,h);
-[SDy,SDx] = gradient(S,h);
+[E_dotDy,E_dotDx] = myGradient(E_dot,h);
+[SDy,SDx] = myGradient(S,h);
 
 % X-direction
 RHS_x = - 3*UxDxx - 3*UyDyx + 2*(1-1/n)*E_dot.^(-1).*(e11_dot.*E_dotDx ...

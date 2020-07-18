@@ -16,8 +16,8 @@ function [ e11_dot,e12_dot,e21_dot,e22_dot ] = strain_rate( Ux,Uy,h,scale )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Derivatives of velocity
-[UxDy,UxDx] = gradient(Ux,h);
-[UyDy,UyDx] = gradient(Uy,h);
+[UxDy,UxDx] = myGradient(Ux,h);
+[UyDy,UyDx] = myGradient(Uy,h);
 % U1X1 = gradient(Ux',h)';   % i=1, j=1, du/dx component
 % U1X2 = gradient(Ux,h);     % i=1, j=2, du/dy component
 % U2X1 = gradient(Uy',h)';   % i=2, j=1, dv/dx component
