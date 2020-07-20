@@ -16,9 +16,9 @@
 clearvars
 addpath('src/')
 
-%mainExample()
+mainExample()
 
-mainAnimation()
+%mainAnimation()
 
 %% Functions
 function mainExample()
