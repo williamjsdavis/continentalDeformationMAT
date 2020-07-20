@@ -8,26 +8,29 @@ classdef TVSfield < handle
         S
         X
         Y
+        stencil
         simSettings
         otherProp
     end
     
     methods
         function obj = TVSfield()
-            %UNTITLED Construct an instance of this class
-            %   Detailed explanation goes here
+            %Field constructor
+            %   Setup grids and stencils
             
             % Settings
-            simulationSettings(obj)
-            
+            obj.simulationSettings()
             
             % Setup grids
-            setupGrid(obj)
+            obj.setupGrid()
+            
+            % Set up Poisson stencils
+            obj.setupPoisson()
         end
         
         function simulationSettings(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            %Getting simulation settings
+            %   Parse input and pass to functions
             [L,u0,g,pc,pm,s0,n,Ar,Nx,dt,nt,S_bound,poisson_set] = ...
                 simulation_settings();
             obj.simSettings.L = L;
@@ -45,8 +48,8 @@ classdef TVSfield < handle
             obj.simSettings.poisson_set = poisson_set;
         end
         function setupGrid(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            %Set up field grids
+            %   Parse input and pass to functions
             [obj.Ux,obj.Uy,obj.S,s0,h,obj.X,obj.Y,x,y] = ...
                 setup_grid(obj.simSettings.Nx,...
                            obj.simSettings.L,...
@@ -58,25 +61,24 @@ classdef TVSfield < handle
             obj.otherProp.x = x;
             obj.otherProp.y = y;
         end
-        function timeSolve(obj)
+        function setupPoisson(obj)
             %METHOD1 Summary of this method goes here
             %   Detailed explanation goes here
-            
-            % Set up Poisson stencils
-            Nx = obj.simSettings.Nx;
-            [Mx,My] = setup_poisson(Nx,obj.otherProp.h);
+            [Mx,My] = setup_poisson(obj.simSettings.Nx,obj.otherProp.h);
+            obj.stencil.Mx = Mx;
+            obj.stencil.My = My;
+        end
+        function timeSolve(obj)
+            %Solves the solution in space and time
+            %   Parse input and pass to functions
             
             % Time-stepping
             for i = 1:obj.simSettings.nt
                 % Solve for velocity
-                obj.poissonVel(Mx,My);
+                obj.poissonVel(obj.stencil.Mx,obj.stencil.My);
                 
                 % Solve for thickness
                 obj.upwindS();
-                
-                % Update
-%                obj.Ux = Ux_new; obj.Uy = Uy_new; obj.S = S_new;
-%                 Ux = Ux_new; Uy = Uy_new; S = S_new;
                 
                 % Print message
                 pctTime = 100*i/obj.simSettings.nt;
@@ -84,8 +86,8 @@ classdef TVSfield < handle
             end
         end
         function poissonVel(obj,Mx,My)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            %Poisson equation solve for velocity
+            %   Parse input and pass to function
 
             % New velocities
             [obj.Ux,obj.Uy] = poisson_vel(obj.Ux,obj.Uy,...
@@ -96,8 +98,8 @@ classdef TVSfield < handle
                                           obj.simSettings.poisson_set); 
         end
         function upwindS(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
+            %Upwind scheme to solve for thickness
+            %   Parse input and pass to function
 
             % New thickness
             obj.S = upwind_s(obj.Ux,obj.Uy,obj.S,...
@@ -105,11 +107,46 @@ classdef TVSfield < handle
                              obj.simSettings.dt,...
                              obj.simSettings.S_bound); 
         end
-        function [] = plot6(obj)
-            %METHOD1 Summary of this method goes here
-            %   Detailed explanation goes here
-
+        function plot6(obj)
+            %Plot diagnostic results to six subplots
+            %   Passes object to plotting function, showing various parameters.
             plot_cont;
+        end
+        function plot3D(obj)
+            %Plot elevation
+            %   Plots 3D results from continental deformation modelling
+            
+            % Mirror domain
+            thick2elev = (1 - obj.simSettings.pc/obj.simSettings.pm);
+            Lscale = obj.simSettings.L;
+            Xoffset = max(obj.X(:))+obj.X(2,2);
+            
+            Xscaled = Lscale*[obj.X;obj.X+Xoffset];
+            Yscaled = Lscale*[flipud(obj.Y);obj.Y];
+            Escaled = Lscale*thick2elev*[flipud(obj.S);obj.S];
+            
+            % Plot
+            figure('Position',[399,259,983,517])
+            surf(Xscaled,Yscaled,Escaled)
+            zlim([2.5,7])
+            zlabel('Elevation, km')
+            xlabel('X distance, km')
+            ylabel('Y distance, km')
+            
+            % View settings
+            load 'DEMcolormap.mat' mymap
+            view(145,13)
+            colormap(mymap)
+            caxis([2.5 6.5])
+            set(gca,'DataAspectRatio',[300 300 1])
+            
+            % Overall title
+            dim = [0.24,0.68,0.3,0.3];
+            timeMa = obj.simSettings.nt*obj.simSettings.dt*...
+                obj.simSettings.u0/Lscale;
+            str = ['Topography at time = ',sprintf('%0.1f',timeMa),' Ma'];
+            annotation('textbox',dim,'String',str,'FitBoxToText','on',...
+                'EdgeColor','none','FontSize',20,'FontWeight','bold');
         end
     end
 end

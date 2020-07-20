@@ -1,5 +1,5 @@
 function [Ux,Uy,S,s0,h,X,Y,x,y] = setup_grid(Nx,L,u0,s0,dt)
-%Set up grids
+%Set up field grids
 %   William Davis, 17/07/20
 %
 %   Notes:

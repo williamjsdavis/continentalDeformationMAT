@@ -16,6 +16,14 @@
 clearvars
 addpath('src/')
 
+%mainFunctional()
+ 
+mainOO()
+
+%% Functions
+function mainFunctional()
+% Functional example
+
 % Settings
 [L,u0,g,pc,pm,s0,n,Ar,Nx,dt,nt,S_bound,poisson_set] = simulation_settings();
 
@@ -29,3 +37,17 @@ disp('Complete!')
 % Plotting
 plot_cont;
 plot_3D;
+end
+function mainOO()
+% Object oriented example
+
+% Instantiate field object
+thinViscousSheet = TVSfield();
+
+% Solve
+thinViscousSheet.timeSolve();
+
+% Plot
+thinViscousSheet.plot6();
+thinViscousSheet.plot3D();
+end

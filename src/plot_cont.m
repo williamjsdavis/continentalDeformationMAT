@@ -2,7 +2,8 @@
 %   William Davis, 12/12/17
 %
 %   Notes:
-%   Plots results from continental deformation modelling
+%   Plots results from continental deformation modelling. Six subplots
+%   showing various parameters.
 %
 %   Inputs:
 %   - 
@@ -10,6 +11,12 @@
 %   Problems:
 %   - No scale for tensor plots
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Parse inputs
+if exist('obj','var')
+    [Ux_new,Uy_new,S_new,X,Y,L,u0,g,pc,pm,n,Ar,Nx,dt,nt,s0,h,x,y] = ...
+        parseOOinput(obj);
+end
 
 % Settings
 save_figure = 0; % Save figure?
@@ -264,3 +271,28 @@ view(0,90)
 axis equal
 axis([0,L*Nx,0,L*Nx])
 %}
+%% Functions
+function [Ux,Uy,S,X,Y,L,u0,g,pc,pm,n,Ar,Nx,dt,nt,s0,h,x,y] = ...
+    parseOOinput(obj)
+% Convert OO inputs
+Ux = obj.Ux;
+Uy = obj.Uy;
+S = obj.S;
+X = obj.X;
+Y = obj.Y;
+L = obj.simSettings.L;
+u0 = obj.simSettings.u0;
+g = obj.simSettings.g;
+pc = obj.simSettings.pc;
+pm = obj.simSettings.pm;
+%s0 = obj.simSettings.s0;
+n = obj.simSettings.n;
+Ar = obj.simSettings.Ar;
+Nx = obj.simSettings.Nx;
+dt = obj.simSettings.dt;
+nt = obj.simSettings.nt;
+s0 = obj.otherProp.s0;
+h = obj.otherProp.h;
+x = obj.otherProp.x;
+y = obj.otherProp.y;
+end
