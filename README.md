@@ -7,7 +7,7 @@ Continental collision produces some of the most striking tectonic features on th
 Here, I present MATLAB package for modelling geologic scale continental deformation, using the thin viscous sheet approximation of [England and McKenzie (1982)](https://doi.org/10.1111/j.1365-246X.1982.tb04969.x). Appropriate corrections and changes are made according to [later publications](https://doi.org/10.1111/j.1365-246X.1983.tb03328.x). 
 
 # Theory
-The general theory behind the thin viscous sheet approximation is that the crust is represented as a thin layer that is isostatically in equilibrium with the lithosphere, and that velocities within the crust do not vary with depth. This flow is incompressible and is driven by tractions and the gradients in crustal thickness. Vertical gradients of deviatoric stresses are also neglected. Considering vertical gradients in forces and rheology, it can be shown that pressure in a column of crust is
+The idea behind the thin viscous sheet approximation is to represent the crust as a thin layer that is isostatically in equilibrium with the lithosphere, and that velocities within the crust do not vary with depth. This flow is incompressible and is driven by tractions and the gradients in crustal thickness. Vertical gradients of deviatoric stresses are also neglected. Considering vertical gradients in forces and rheology, it can be shown that pressure in a column of crust is
 
 <img src="https://render.githubusercontent.com/render/math?math=p=\tau_{zz}-\int_{0}^{z}\rho g\ dz'.">
 
@@ -39,13 +39,17 @@ To constrain time-dependence, the continuity equation is written in the form:
 
 Equations are solved on a NxN grid (e.g. 32x32), through numerical approximations to the equations for velocity and crustal thickness. The derivative terms in the RHS of the velocity equation are approximated through centre difference schemes. To solve for the velocity field on the LHS, the interior nodes of the RHS are initially set to zero and the new velocity field is inverted for using a Poisson equation solving routine.
 
+<img src="https://user-images.githubusercontent.com/38541020/87995475-74b9c380-caa4-11ea-9c47-e6c0b5bd77ac.png" width="500" height="auto"/>
+
 Boundary conditions are applied to the velocity fields. These new velocity fields are then used in the centre difference schemes to calculate a new RHS, which is solved again to attain a new solution for the velocities (again applying boundary conditions). This new solution is applied to the old solution until the solution converges. For calculations, very small convergence parameters must be used.
 
 To advance the solution in time, as well as calculate changes in crustal thickness, numerical approximations to the continuity equation are used. The LHS is determined using forward differences, and the RHS is found using an 'upwind' scheme, as the form of the equation lends similarities to a material derivative. The timestep is chosen to satisfy the Courant-Friedrichs-Lewy criterion.
 
-# Figures
-
 <img src="https://user-images.githubusercontent.com/38541020/87989771-7d57cd00-ca97-11ea-967f-e772b12c35c3.png" width="500" height="auto"/>
+
+# Examples
+
+To illustrate the uses of this package I show the results of two simulations: one at Ar=1; and another at Ar=10. Both simulations are Newtonian (n=1) and are solved over a range of 5 million years. Diagnostic parameters are shown below for each model ()
 
 <img src="https://user-images.githubusercontent.com/38541020/87987748-0240e780-ca94-11ea-9041-29bdd6645537.png" width="500" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987782-0cfb7c80-ca94-11ea-87b6-7965e35b49d0.png" width="500" height="auto"/>
 
