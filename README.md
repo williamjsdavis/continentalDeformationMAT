@@ -6,6 +6,19 @@ Continental collision produces some of the most striking tectonic features on th
 
 Here, I present MATLAB package for modelling geologic scale continental deformation, using the thin viscous sheet approximation of [England and McKenzie (1982)](https://doi.org/10.1111/j.1365-246X.1982.tb04969.x). Appropriate corrections and changes are made according to [later publications](https://doi.org/10.1111/j.1365-246X.1983.tb03328.x). 
 
+# Theory
+The general theory behind the thin viscous sheet approximation is that the crust is represented as a thin layer that is isostatically in equilibrium with the lithosphere, and velocities within the crust do not vary with depth. This flow is incompressible and is driven by tractions and the gradients in crustal thickness. Vertical gradients of deviatoric stresses are also neglected. Considering vertical gradients in forces and rheology, it can be shown:
+
+<img src="https://render.githubusercontent.com/render/math?math=p=\tau_{zz}-\int_{0}^{z}\rho g dz'.">
+
+Considering a level at the base of the lithosphere for isostatic balance (z=0). The vertical average of this pressure through the lithosphere and any topography gives:
+
+<img src="https://render.githubusercontent.com/render/math?math=\bar{p}=\bar{\tau}_{zz}-\frac{g \rho_c}{2L}(1-\rho_c/\rho_m)S^2+\frac{g \rho_m L}{2}.">
+
+The term <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> is calculated through the constitutive equation:
+
+
+
 # Figures
 
 <img src="https://user-images.githubusercontent.com/38541020/87989771-7d57cd00-ca97-11ea-967f-e772b12c35c3.png" width="500" height="auto"/>
