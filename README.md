@@ -3,7 +3,7 @@ Modelling geologic scale continental deformation by the thin viscous sheet appro
 
 # Figures
 
-[Ar1_fig.pdf](https://github.com/williamjsdavis/continentalDeformationMAT/files/4950077/Ar1_fig.pdf)
+![Ar1_fig](https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png)
 
 # Examples
 
