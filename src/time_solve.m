@@ -1,4 +1,4 @@
-function [Ux,Uy,S] = time_solve(Ux0,Uy0,S0,h,n,Ar,dt,S_bound,nt,poisson_set)
+function [Ux,Uy,S] = time_solve(Ux,Uy,S,h,n,Ar,dt,S_bound,nt,poisson_set)
 %Solves the solution in space and time
 %   William Davis, 12/12/17
 %
@@ -8,9 +8,9 @@ function [Ux,Uy,S] = time_solve(Ux0,Uy0,S0,h,n,Ar,dt,S_bound,nt,poisson_set)
 %   Assumes gris spaces dx=dy=h.
 %
 %   Inputs:
-%   - "Ux0"                     Initial velocity in x-direction, []
-%   - "Uy0"                     Initial velocity in y-direction, []
-%   - "S0"                      Initial crustal thickness, []
+%   - "Ux"                      Velocity in x-direction, []
+%   - "Uy"                      Velocity in y-direction, []
+%   - "S0"                      Crustal thickness, []
 %   - "h"                       Spatial grid size, []
 %   - "n"                       Power law rheology, []
 %   - "Ar"                      Argand number, []
@@ -26,22 +26,17 @@ function [Ux,Uy,S] = time_solve(Ux0,Uy0,S0,h,n,Ar,dt,S_bound,nt,poisson_set)
 %   - 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Preallocating sizes
-Ux = Ux0; 
-Uy = Uy0; 
-S = S0; 
-
-% Set up Poisson stencils
+% Set up stencils
 Nx = length(Ux);
 [Mx,My] = setup_poisson(Nx,h);
 
 % Time-stepping
 for i = 1:nt
     % Solve for velocity
-    [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,poisson_set); % New velocities
+    [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,poisson_set);
 
     % Solve for thickness
-    S_new = upwind_s(Ux_new,Uy_new,S,h,dt,S_bound); % New thicknesses
+    S_new = upwind_s(Ux_new,Uy_new,S,h,dt,S_bound);
 
     % Update
     Ux = Ux_new; Uy = Uy_new; S = S_new;
