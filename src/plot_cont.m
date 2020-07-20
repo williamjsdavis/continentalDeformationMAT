@@ -174,7 +174,7 @@ xlabel('X distance, km')
 ylabel('Elevation above undisturbed crust, km')
 
 % Overall title
-dim = [0.42,0.68,0.3,0.3];
+dim = [0.42,0.70,0.3,0.3];
 str = ['Properties at time = ',sprintf('%0.1f',nt*dt*u0/L),' Ma'];
 annotation('textbox',dim,'String',str,'FitBoxToText','on','EdgeColor','none',...
     'FontSize',20,'FontWeight','bold');
@@ -290,7 +290,7 @@ n = obj.simSettings.n;
 Ar = obj.simSettings.Ar;
 Nx = obj.simSettings.Nx;
 dt = obj.simSettings.dt;
-nt = obj.simSettings.nt;
+nt = obj.nt;
 s0 = obj.otherProp.s0;
 h = obj.otherProp.h;
 x = obj.otherProp.x;

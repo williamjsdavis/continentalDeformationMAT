@@ -1,4 +1,4 @@
-function [L,u0,g,pc,pm,s0,n,Ar,Nx,dt,nt,S_bound,poisson_set] = simulation_settings()
+function [L,u0,g,pc,pm,s0,n,Ar,Nx,dt,S_bound,poisson_set] = simulation_settings()
 %Simulation settings
 %   William Davis, 17/07/20
 %
@@ -32,5 +32,5 @@ poisson_set.beta = 1E-3; % Convergence criterion
 % Time solver settings
 S_bound = 'const'; % South boundary condition: 'const' or 'neu'
 dt = 0.1; % Non-dimensional time
-nt = 100; % Number of time-steps
+% nt = 100; % Number of time-steps
 end

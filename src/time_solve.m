@@ -1,4 +1,4 @@
-function [Ux,Uy,S] = time_solve(Ux,Uy,S,h,n,Ar,dt,S_bound,nt,poisson_set)
+function [Ux,Uy,S] = time_solve(Ux,Uy,S,h,n,Ar,dt,S_bound,nSteps,poisson_set)
 %Solves the solution in space and time
 %   William Davis, 12/12/17
 %
@@ -16,7 +16,7 @@ function [Ux,Uy,S] = time_solve(Ux,Uy,S,h,n,Ar,dt,S_bound,nt,poisson_set)
 %   - "Ar"                      Argand number, []
 %   - "dt"                      Time-step, []
 %   - "S_bound"                 South boundary type: 'const' or 'neu'
-%   - "nt"                      Number of time-steps
+%   - "nSteps"                  Number of time-steps
 %   - "poisson_set"             Poisson solver settings
 %       - "alpha"                   Stability criterion, ~10E-2
 %       - "beta"                    Convergence criterion, ~10E-3
@@ -31,7 +31,7 @@ Nx = length(Ux);
 [Mx,My] = setup_poisson(Nx,h);
 
 % Time-stepping
-for i = 1:nt
+for i = 1:nSteps
     % Solve for velocity
     [Ux_new,Uy_new] = poisson_vel(Ux,Uy,Mx,My,S,h,n,Ar,poisson_set);
 
@@ -42,7 +42,7 @@ for i = 1:nt
     Ux = Ux_new; Uy = Uy_new; S = S_new;
     
     % Print message
-    disp(['Progress: ',sprintf('%5.2f',100*i/nt),'%'])
+    disp(['Progress: ',sprintf('%5.2f',100*i/nSteps),'%'])
 end
 
 end
