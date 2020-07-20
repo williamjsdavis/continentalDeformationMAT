@@ -7,21 +7,21 @@ Continental collision produces some of the most striking tectonic features on th
 Here, I present MATLAB package for modelling geologic scale continental deformation, using the thin viscous sheet approximation of [England and McKenzie (1982)](https://doi.org/10.1111/j.1365-246X.1982.tb04969.x). Appropriate corrections and changes are made according to [later publications](https://doi.org/10.1111/j.1365-246X.1983.tb03328.x). 
 
 # Theory
-The general theory behind the thin viscous sheet approximation is that the crust is represented as a thin layer that is isostatically in equilibrium with the lithosphere, and velocities within the crust do not vary with depth. This flow is incompressible and is driven by tractions and the gradients in crustal thickness. Vertical gradients of deviatoric stresses are also neglected. Considering vertical gradients in forces and rheology, it can be shown:
+The general theory behind the thin viscous sheet approximation is that the crust is represented as a thin layer that is isostatically in equilibrium with the lithosphere, and that velocities within the crust do not vary with depth. This flow is incompressible and is driven by tractions and the gradients in crustal thickness. Vertical gradients of deviatoric stresses are also neglected. Considering vertical gradients in forces and rheology, it can be shown that pressure in a column of crust is
 
 <img src="https://render.githubusercontent.com/render/math?math=p=\tau_{zz}-\int_{0}^{z}\rho g\ dz'.">
 
-Considering a level at the base of the lithosphere for isostatic balance (z=0). The vertical average of this pressure through the lithosphere and any topography gives:
+Consider a level at the base of the lithosphere for isostatic balance (z=0). The vertical average of this pressure through the lithosphere and any topography gives
 
 <img src="https://render.githubusercontent.com/render/math?math=\bar{p}=\bar{\tau}_{zz}-\frac{g \rho_c}{2L}(1-\rho_c/\rho_m)S^2+\frac{g \rho_m L}{2}.">
 
-The term <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> is calculated through the constitutive equation:
+The term <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> is calculated through the constitutive equation
 
 <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}=B\dot{E}^{(\frac{1}{n}-1)}\dot{\varepsilon}_{ij}.">
 
-This describes power-law rheology, where n=1 is a Newtonian fluid. The parameter B is a constant which encompasses depth averaged viscosity, and <img src="https://render.githubusercontent.com/render/math?math=\dot{E}"> is the second invariant of the strain rate tensor.
+This describes a power-law rheology, where n=1 is a Newtonian fluid. The parameter B is a constant which encompasses depth averaged viscosity, and <img src="https://render.githubusercontent.com/render/math?math=\dot{E}"> is the second invariant of the strain rate tensor.
 
-Substituting (xx) and (xx) into force-balance equations in the horizontal directions (derived from the equation <img src="https://render.githubusercontent.com/render/math?math=\partial\sigma_{ij}/\partial x_j=\rho g a_i">), gives:
+Substituting <img src="https://render.githubusercontent.com/render/math?math=\bar{p}"> and <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> into force-balance equations in the horizontal directions gives
 
 <img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=-3\nabla(\nabla\cdot u) + 2(1-1/n)\dot{E}^{-1} \big[\nabla\dot{E}\cdot\dot{\varepsilon}_{ij}+(\nabla\cdot u)\nabla\dot{E}\big] + 2 Ar \dot{E}^{(1-\frac{1}{n})}S\nabla S.">
 
