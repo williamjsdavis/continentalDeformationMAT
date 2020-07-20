@@ -36,7 +36,6 @@ To constrain time-dependence, the continuity equation is written in the form:
 <img src="https://render.githubusercontent.com/render/math?math=\frac{\partial S}{\partial t}=- \nabla\cdot (Su).">
 
 # Implementation and computation
-
 Equations are solved on a NxN grid (e.g. 32x32), through numerical approximations to the equations for velocity and crustal thickness. The derivative terms in the RHS of the velocity equation are approximated through centre difference schemes. To solve for the velocity field on the LHS, the interior nodes of the RHS are initially set to zero and the new velocity field is inverted for using a Poisson equation solving routine.
 
 <img src="https://user-images.githubusercontent.com/38541020/87995475-74b9c380-caa4-11ea-9c47-e6c0b5bd77ac.png" width="500" height="auto"/>
@@ -47,15 +46,52 @@ To advance the solution in time, as well as calculate changes in crustal thickne
 
 <img src="https://user-images.githubusercontent.com/38541020/87989771-7d57cd00-ca97-11ea-967f-e772b12c35c3.png" width="500" height="auto"/>
 
+# Using the package
+This example follows the script `main.m`. Further information on the functions/classes/options can be found in the headers of each file.
+
+### Instantiate a field object
+The constructor of class `TVSfield` is used to set up an object with default parameters of the simulation.
+```Matlab
+% Instantiate field object
+thinViscousSheet = TVSfield();
+```
+
+Default settings must be changed before creating grids and stencils.
+
+```Matlab
+thinViscousSheet.simSettings.Nx = 32;
+thinViscousSheet.simSettings.Ar = 10;
+```
+
+### Setup grids and stencils
+Solver grids and stencils are initialized using the `setupGrids()` method. 
+```Matlab
+% Setup grids and stencils
+thinViscousSheet.setupGrids();
+```
+### Solving
+Specify the number of time-steps to solve for, then pass this as an argument to `timeSolve()`. The properties of the `TVSfield` object are automatically updated.
+```Matlab
+% Solve
+nTimeSteps = 100;
+thinViscousSheet.timeSolve(nTimeSteps);
+```
+### Plotting
+Use the methods `plot3D()` and `plot6()` to view the results.
+```Matlab
+figure
+thinViscousSheet.plot3D('default');
+```
+
 # Examples
 
-To illustrate the uses of this package I show the results of two simulations: one at Ar=1; and another at Ar=10. Both simulations are Newtonian (n=1) and are solved over a range of 5 million years. Surface plots of topography are shown below (left and right are Ar=1 and Ar=10, respectively).
+To illustrate the uses of this package I show the results of two simulations: one at Ar=1; and another at Ar=10. Both simulations are Newtonian (n=1) and are solved over a range of 5 million years. Plots of topography from `plot3D()` are shown below (left and right are Ar=1 and Ar=10, respectively).
 
-<img src="https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png" width="300" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987473-8d6dad80-ca93-11ea-9b2d-4c75dbcff4ab.png" width="300" height="auto"/>
+<img src="https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png" width="400" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987473-8d6dad80-ca93-11ea-9b2d-4c75dbcff4ab.png" width="400" height="auto"/>
 
-Diagnostic parameters can be plotted using the `plot6` method. An example is shown below for the Ar=1 model.
+Plots of diagnostic parameters from `plot3D()` are shown below for the Ar=1 model.
 
-<img src="https://user-images.githubusercontent.com/38541020/87987748-0240e780-ca94-11ea-9041-29bdd6645537.png" width="400" height="auto"/>
+<img src="https://user-images.githubusercontent.com/38541020/87987748-0240e780-ca94-11ea-9041-29bdd6645537.png" width="600" height="auto"/>
 <!---
 <img src="https://user-images.githubusercontent.com/38541020/87987782-0cfb7c80-ca94-11ea-87b6-7965e35b49d0.png" width="400" height="auto"/>
 --->
@@ -64,4 +100,5 @@ Diagnostic parameters can be plotted using the `plot6` method. An example is sho
 # Examples
 
 <img src="https://user-images.githubusercontent.com/38541020/87986639-3f0bdf00-ca92-11ea-9e81-d23afbbff34f.gif" width="500" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987207-19cba080-ca93-11ea-9995-9f8749467be7.gif" width="500" height="auto"/>
+
 
