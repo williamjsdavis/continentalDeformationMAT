@@ -23,7 +23,7 @@ This describes a power-law rheology, where n=1 is a Newtonian fluid. The paramet
 
 Substituting <img src="https://render.githubusercontent.com/render/math?math=\bar{p}"> and <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> into force-balance equations in the horizontal directions gives
 
-<img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=2Ar\dot{E}^{(1-1/n)}S\nabla S-3\nabla(\nabla\cdot u)-2(1/n-1)\dot{E}^{-1}\nabla\dot{E}\cdot\dot{\varepsilon}_{ij}-2(1/n-1)\dot{E}^{-1}(\nabla\cdot u)\nabla\dot{E}.">
+<img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=2Ar\dot{E}^{(1-1/n)}S\nabla S-3\nabla(\nabla\cdot u)-2(1/n-1)\dot{E}^{-1}\nabla\dot{E}\cdot\dot{\varepsilon}-2(1/n-1)\dot{E}^{-1}(\nabla\cdot u)\nabla\dot{E}.">
 
 In this representation, only horizontal derivatives are considered. The terms are non-dimensional and the Argand number (Ar) is defined as:
 
@@ -37,7 +37,11 @@ To constrain time-dependence, the continuity equation is written in the form:
 
 # Implementation and computation
 
-Text
+Equations are solved on a NxN grid (e.g. 32x32), through numerical approximations to the equations for velocity and crustal thickness. The derivative terms in the RHS of the velocity equation are approximated through centre difference schemes. To solve for the velocity field on the LHS, the interior nodes of the RHS are initially set to zero and the new velocity field is inverted for using a Poisson equation solving routine.
+
+Boundary conditions are applied to the velocity fields. These new velocity fields are then used in the centre difference schemes to calculate a new RHS, which is solved again to attain a new solution for the velocities (again applying boundary conditions). This new solution is applied to the old solution until the solution converges. For calculations, very small convergence parameters must be used.
+
+To advance the solution in time, as well as calculate changes in crustal thickness, numerical approximations to the continuity equation are used. The LHS is determined using forward differences, and the RHS is found using an 'upwind' scheme, as the form of the equation lends similarities to a material derivative. The timestep is chosen to satisfy the Courant-Friedrichs-Lewy criterion.
 
 # Figures
 
