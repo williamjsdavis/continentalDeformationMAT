@@ -17,13 +17,13 @@ Consider a level at the base of the lithosphere for isostatic balance (z=0). The
 
 The term <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> is calculated through the constitutive equation
 
-<img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}=B\dot{E}^{\big(\frac{1}{n}-1\big)}\dot{\varepsilon}_{ij}.">
+<img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{ij}=B\dot{E}^{(1/n-1)}\dot{\varepsilon}_{ij}.">
 
 This describes a power-law rheology, where n=1 is a Newtonian fluid. The parameter B is a constant which encompasses depth averaged viscosity, and <img src="https://render.githubusercontent.com/render/math?math=\dot{E}"> is the second invariant of the strain rate tensor.
 
 Substituting <img src="https://render.githubusercontent.com/render/math?math=\bar{p}"> and <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> into force-balance equations in the horizontal directions gives
 
-<img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=2Ar\dot{E}^{\big(1-\frac{1}{n}\big)}S\nabla S-3\nabla(\nabla\cdot u)-2\big(\frac{1}{n}-1\big)\dot{E}^{-1}\big[\nabla\dot{E}\cdot\dot{\varepsilon}_{ij}--(\nabla\cdot u)\nabla\dot{E}\big].">
+<img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=2Ar\dot{E}^{(1-1/n)}S\nabla S-3\nabla(\nabla\cdot u)-2(1/n-1)\dot{E}^{-1}\big[\nabla\dot{E}\cdot\dot{\varepsilon}_{ij}--(\nabla\cdot u)\nabla\dot{E}\big].">
 
 In this representation, only horizontal derivatives are considered. The terms are non-dimensional and the Argand number (Ar) is defined as:
 
