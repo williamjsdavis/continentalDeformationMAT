@@ -21,7 +21,7 @@ The term <img src="https://render.githubusercontent.com/render/math?math=\bar{\t
 
 This describes power-law rheology, where n=1 is a Newtonian fluid. The parameter B is a constant which encompasses depth averaged viscosity, and <img src="https://render.githubusercontent.com/render/math?math=\dot{E}"> is the second invariant of the strain rate tensor.
 
-Substituting (xx) and (xx) into force-balance equations in the horizontal directions (derived from the equation <img src="https://render.githubusercontent.com/render/math?math=\frac{\partial\sigma_{ij}}{\partial x_j}=\rho g a_i">), gives:
+Substituting (xx) and (xx) into force-balance equations in the horizontal directions (derived from the equation <img src="https://render.githubusercontent.com/render/math?math=\partial\sigma_{ij}/\partial x_j=\rho g a_i">), gives:
 
 <img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=-3\nabla(\nabla\cdot u) + 2(1-1/n)\dot{E}^{-1} \big[\nabla\dot{E}\cdot\dot{\varepsilon}_{ij}+(\nabla\cdot u)\nabla\dot{E}\big] + 2 Ar \dot{E}^{(1-\frac{1}{n})}S\nabla S.">
 
@@ -31,6 +31,13 @@ In this representation, only horizontal derivatives are considered. The terms ar
 
 This number describes the relative contributions of forces arising from variations in crustal thicknesses and the force required to deform a fluid. For large Ar, the crustal gravitational forces succumb to deformation - the lithosphere is weak (a cheese analogue might be a ripe brie). Small Ar flows resist deformation and changes in crustal thickness, forming rigid blocks (think feta).
 
+To constrain time-dependence, the continuity equation is written in the form:
+
+<img src="https://render.githubusercontent.com/render/math?math=\frac{\partial S}{\partial t}=- \nabla\cdot (Su).">
+
+# Implementation and computation
+
+Text
 
 # Figures
 
