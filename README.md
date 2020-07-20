@@ -9,7 +9,7 @@ Here, I present MATLAB package for modelling geologic scale continental deformat
 # Theory
 The general theory behind the thin viscous sheet approximation is that the crust is represented as a thin layer that is isostatically in equilibrium with the lithosphere, and velocities within the crust do not vary with depth. This flow is incompressible and is driven by tractions and the gradients in crustal thickness. Vertical gradients of deviatoric stresses are also neglected. Considering vertical gradients in forces and rheology, it can be shown:
 
-<img src="https://render.githubusercontent.com/render/math?math=p=\tau_{zz}-\int_{0}^{z}\rho g dz'.">
+<img src="https://render.githubusercontent.com/render/math?math=p=\tau_{zz}-\int_{0}^{z}\rho g\ dz'.">
 
 Considering a level at the base of the lithosphere for isostatic balance (z=0). The vertical average of this pressure through the lithosphere and any topography gives:
 
@@ -17,13 +17,20 @@ Considering a level at the base of the lithosphere for isostatic balance (z=0). 
 
 The term <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> is calculated through the constitutive equation:
 
-<img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}=B\dot{E}^{(\frac{1}{n}-1)}\dot{\varepsilon_{ij}}.">
+<img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}=B\dot{E}^{(\frac{1}{n}-1)}\dot{\varepsilon}_{ij}.">
 
 This describes power-law rheology, where n=1 is a Newtonian fluid. The parameter B is a constant which encompasses depth averaged viscosity, and <img src="https://render.githubusercontent.com/render/math?math=\dot{E}"> is the second invariant of the strain rate tensor.
 
 Substituting (xx) and (xx) into force-balance equations in the horizontal directions (derived from the equation <img src="https://render.githubusercontent.com/render/math?math=\frac{\partial\sigma_{ij}}{\partial x_j}=\rho g a_i">), gives:
 
-<img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=-3\nabla(\nabla\cdot u) + 2(1-1/n)\dot{E}^{-1} \big[\nabla\dot{E}\cdot\dot{\varepsilon_{ij}}+(\nabla\cdot u)\nabla\dot{E}\big] + 2 Ar \dot{E}^{(1-\frac{1}{n})}S\nabla S.">
+<img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=-3\nabla(\nabla\cdot u) + 2(1-1/n)\dot{E}^{-1} \big[\nabla\dot{E}\cdot\dot{\varepsilon}_{ij}+(\nabla\cdot u)\nabla\dot{E}\big] + 2 Ar \dot{E}^{(1-\frac{1}{n})}S\nabla S.">
+
+In this representation, only horizontal derivatives are considered. The terms are non-dimensional and the Argand number (Ar) is defined as:
+
+<img src="https://render.githubusercontent.com/render/math?math=Ar = \frac{g\rho_c(1-\rho_c/\rho_m)L}{B(u_0/L)^{1/n}}.">
+
+This number describes the relative contributions of forces arising from variations in crustal thicknesses and the force required to deform a fluid. For large Ar, the crustal gravitational forces succumb to deformation - the lithosphere is weak (a cheese analogue might be a ripe brie). Small Ar flows resist deformation and changes in crustal thickness, forming rigid blocks (think feta).
+
 
 # Figures
 
