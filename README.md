@@ -49,11 +49,17 @@ To advance the solution in time, as well as calculate changes in crustal thickne
 
 # Examples
 
-To illustrate the uses of this package I show the results of two simulations: one at Ar=1; and another at Ar=10. Both simulations are Newtonian (n=1) and are solved over a range of 5 million years. Diagnostic parameters are shown below for each model ()
+To illustrate the uses of this package I show the results of two simulations: one at Ar=1; and another at Ar=10. Both simulations are Newtonian (n=1) and are solved over a range of 5 million years. Surface plots of topography are shown below (left and right are Ar=1 and Ar=10, respectively).
 
-<img src="https://user-images.githubusercontent.com/38541020/87987748-0240e780-ca94-11ea-9041-29bdd6645537.png" width="400" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987782-0cfb7c80-ca94-11ea-87b6-7965e35b49d0.png" width="400" height="auto"/>
+<img src="https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png" width="300" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987473-8d6dad80-ca93-11ea-9b2d-4c75dbcff4ab.png" width="300" height="auto"/>
 
-<img src="https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png" width="200" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987473-8d6dad80-ca93-11ea-9b2d-4c75dbcff4ab.png" width="200" height="auto"/>
+Diagnostic parameters can be plotted using the `plot6` method. An example is shown below for the Ar=1 model.
+
+<img src="https://user-images.githubusercontent.com/38541020/87987748-0240e780-ca94-11ea-9041-29bdd6645537.png" width="400" height="auto"/>
+<!---
+<img src="https://user-images.githubusercontent.com/38541020/87987782-0cfb7c80-ca94-11ea-87b6-7965e35b49d0.png" width="400" height="auto"/>
+--->
+
 
 # Examples
 
