@@ -23,7 +23,7 @@ This describes a power-law rheology, where n=1 is a Newtonian fluid. The paramet
 
 Substituting <img src="https://render.githubusercontent.com/render/math?math=\bar{p}"> and <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> into force-balance equations in the horizontal directions gives
 
-<img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=-3\nabla(\nabla\cdot u) + 2(1-1/n)\dot{E}^{-1} \big[\nabla\dot{E}\cdot\dot{\varepsilon}_{ij}+(\nabla\cdot u)\nabla\dot{E}\big] + 2 Ar \dot{E}^{(1-\frac{1}{n})}S\nabla S.">
+<img src="https://render.githubusercontent.com/render/math?math=\nabla^2 u=-3\nabla(\nabla\cdot u)+2(1-1/n)\dot{E}^{-1}\big[\nabla\dot{E}\cdot\dot{\varepsilon}_{ij}+(\nabla\cdot u)\nabla\dot{E}\big]+2Ar\dot{E}^{(1-\frac{1}{n})}S\nabla S.">
 
 In this representation, only horizontal derivatives are considered. The terms are non-dimensional and the Argand number (Ar) is defined as:
 
