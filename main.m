@@ -16,32 +16,12 @@
 clearvars
 addpath('src/')
 
-%mainFunctional()
+mainExample()
 
-mainOO()
-
-%mainAnimation()
+mainAnimation()
 
 %% Functions
-function mainFunctional()
-% Functional example
-
-% Settings
-[L,u0,g,pc,pm,s0,n,Ar,Nx,dt,S_bound,poisson_set] = simulation_settings();
-
-% Setup grids
-[Ux,Uy,S,s0,h,X,Y,x,y] = setup_grid(Nx,L,u0,s0,dt);
-
-% Solving
-nt = 100; % Number of timesteps
-[Ux_new,Uy_new,S_new] = time_solve(Ux,Uy,S,h,n,Ar,dt,S_bound,nt,poisson_set);
-disp('Complete!')
-
-% Plotting
-plot_cont;
-plot_3D;
-end
-function mainOO()
+function mainExample()
 % Object oriented example
 
 % Instantiate field object
@@ -51,11 +31,11 @@ thinViscousSheet = TVSfield();
 thinViscousSheet.setupGrids();
 
 % Solve
-nStep = 100; % Number of timesteps
-thinViscousSheet.timeSolve(nStep);
+nTimeSteps = 100;
+thinViscousSheet.timeSolve(nTimeSteps);
 
-% Plot
-%thinViscousSheet.plot6();
+% Plots
+thinViscousSheet.plot6();
 
 figure('Position',[399,259,983,517])
 thinViscousSheet.plot3D('default');
