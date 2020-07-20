@@ -32,5 +32,5 @@ poisson_set.beta = 1E-3; % Convergence criterion
 % Time solver settings
 S_bound = 'const'; % South boundary condition: 'const' or 'neu'
 dt = 0.1; % Non-dimensional time
-nt = 10; % Number of time-steps
+nt = 100; % Number of time-steps
 end

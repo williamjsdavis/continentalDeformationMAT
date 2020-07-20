@@ -28,4 +28,4 @@ disp('Complete!')
 
 % Plotting
 plot_cont;
-
+plot_3D;
