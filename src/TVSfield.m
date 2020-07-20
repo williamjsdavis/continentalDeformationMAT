@@ -141,8 +141,9 @@ classdef TVSfield < handle
             % Overall title
             dim = [0.24,0.68,0.3,0.3];
             delete(findall(gcf,'type','annotation'))
-            timeMa = obj.nt*obj.simSettings.dt*obj.simSettings.u0/Lscale;
-            str = ['Topography at time = ',sprintf('%0.1f',timeMa),' Ma'];
+            timeMyrs = obj.nt*obj.simSettings.dt*obj.simSettings.u0/Lscale;
+            str = ['Topography at time = ',...
+                sprintf('%0.1f',timeMyrs),' Myrs'];
             annotation('textbox',dim,'String',str,'FitBoxToText','on',...
                 'EdgeColor','none','FontSize',20,'FontWeight','bold');
         end

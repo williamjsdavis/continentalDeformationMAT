@@ -34,8 +34,8 @@ set(gca,'DataAspectRatio',[300 300 1])
 
 % Overall title
 dim = [0.24,0.68,0.3,0.3];
-timeMa = nt*dt*u0/L;
-str = ['Topography at time = ',sprintf('%0.1f',timeMa),' Ma'];
+timeMyrs = nt*dt*u0/L;
+str = ['Topography at time = ',sprintf('%0.1f',timeMyrs),' Myrs'];
 annotation('textbox',dim,'String',str,'FitBoxToText','on',...
            'EdgeColor','none','FontSize',20,'FontWeight','bold');
 

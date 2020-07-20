@@ -16,7 +16,7 @@
 clearvars
 addpath('src/')
 
-mainExample()
+%mainExample()
 
 mainAnimation()
 
@@ -45,7 +45,7 @@ function mainAnimation()
 
 % Instantiate field object and setup grids
 thinViscousSheet = TVSfield();
-thinViscousSheet.simSettings.Ar = 1;
+thinViscousSheet.simSettings.Ar = 10;
 thinViscousSheet.setupGrids();
 
 % Solve and plot
@@ -59,5 +59,4 @@ while i < nStep
     drawnow
     i = i + 1;
 end
-
 end
