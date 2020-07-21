@@ -1,7 +1,7 @@
 # continentalDeformationMAT
 A MATLAB package for modelling geologic scale continental deformation, using the thin viscous sheet approximation 
 
-<img src="https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png" width="500" height="auto"/>
+<img src="https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png" width="800" height="auto"/>
 
 # Motivation
 Continental collision produces some of the most striking tectonic features on the Earth's surface. For example, collision of the Indian tectonic plate into Asia at 60 Ma caused the formation of the Himalayan range and surrounding Tibetan Plateau, the highest elevation on Earth. These tectonic processes caused huge amounts of uplift and crustal thickening over a far horizontal extent. To better understand these processes, numerical models can be used to test mechanisms and physical properties. 
