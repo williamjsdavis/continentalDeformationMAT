@@ -91,11 +91,11 @@ thinViscousSheet.plot3D('default');
 
 # Examples
 
-To illustrate the uses of this package I show the results of two simulations: one at Ar=1; and another at Ar=10. Both simulations are Newtonian (n=1) and are solved over a range of 5 million years. Plots of topography from `plot3D()` are shown below (left and right are Ar=1 and Ar=10, respectively). Note that the crustal thickening in the low Argand number case is greater but concentrated in a smaller area, in comparison to the ligh Argand number case.
+To illustrate the uses of this package I show the results of two simulations: one at Ar=1; and another at Ar=10. Both simulations are Newtonian (n=1) and are solved over a range of 5 million years. Plots of topography from `plot3D()` are shown below (left and right are Ar=1 and Ar=10, respectively). Note that the crustal thickening in the low Argand number case is greater but concentrated in a smaller area, in comparison to the high Argand number case.
 
 <img src="https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png" width="400" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987473-8d6dad80-ca93-11ea-9b2d-4c75dbcff4ab.png" width="400" height="auto"/>
 
-Plots of diagnostic parameters from `plot3D()` are shown below for the Ar=1 model. Note the changes in the strain field in the X direction and the resulting gradients crustal thickness.
+Plots of diagnostic parameters from `plot6()` are shown below for the Ar=1 model. Note the changes in the strain field in the X direction and the resulting gradients crustal thickness.
 
 <img src="https://user-images.githubusercontent.com/38541020/87987748-0240e780-ca94-11ea-9041-29bdd6645537.png" width="600" height="auto"/>
 <!---
