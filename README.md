@@ -83,7 +83,7 @@ nTimeSteps = 100;
 thinViscousSheet.timeSolve(nTimeSteps);
 ```
 ### Plotting
-Use the methods `plot3D()` and `plot6()` to view the results.
+Use the methods `plot3D()` and `plot6()` to view the results. Methods `plot3D()` mirrors the domain about the line x=0 for plotting purposes.
 ```Matlab
 figure
 thinViscousSheet.plot3D('default');
@@ -106,6 +106,6 @@ Plots of diagnostic parameters from `plot3D()` are shown below for the Ar=1 mode
 # Animations
 Below are animations comparing the time evolution of the  previous Ar=1 and Ar=10 models (left and right are Ar=1 and Ar=10, respectively). Animations are made the using the function `mainAnimation()` in `main.m`.
 
-<img src="https://user-images.githubusercontent.com/38541020/87986639-3f0bdf00-ca92-11ea-9e81-d23afbbff34f.gif" width="500" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987207-19cba080-ca93-11ea-9995-9f8749467be7.gif" width="500" height="auto"/>
+<img src="https://user-images.githubusercontent.com/38541020/87986639-3f0bdf00-ca92-11ea-9e81-d23afbbff34f.gif" width="450" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987207-19cba080-ca93-11ea-9995-9f8749467be7.gif" width="450" height="auto"/>
 
 
