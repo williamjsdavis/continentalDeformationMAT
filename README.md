@@ -1,6 +1,8 @@
 # continentalDeformationMAT
 A MATLAB package for modelling geologic scale continental deformation, using the thin viscous sheet approximation 
 
+<img src="https://user-images.githubusercontent.com/38541020/87987422-7c24a100-ca93-11ea-9592-a0246925571b.png" width="500" height="auto"/>
+
 # Motivation
 Continental collision produces some of the most striking tectonic features on the Earth's surface. For example, collision of the Indian tectonic plate into Asia at 60 Ma caused the formation of the Himalayan range and surrounding Tibetan Plateau, the highest elevation on Earth. These tectonic processes caused huge amounts of uplift and crustal thickening over a far horizontal extent. To better understand these processes, numerical models can be used to test mechanisms and physical properties. 
 
@@ -29,7 +31,7 @@ In this representation, only horizontal derivatives are considered. The terms ar
 
 <img src="https://render.githubusercontent.com/render/math?math=Ar = \frac{g\rho_c(1-\rho_c/\rho_m)L}{B(u_0/L)^{1/n}}.">
 
-This number describes the relative contributions of forces arising from variations in crustal thicknesses and the force required to deform a fluid. For large Ar, the crustal gravitational forces succumb to deformation - the lithosphere is weak (a cheese analogue might be a ripe brie). Small Ar flows resist deformation and changes in crustal thickness, forming rigid blocks (think feta).
+This number describes the relative contributions of forces arising from variations in crustal thicknesses and the force required to deform a fluid. For large Ar, the crustal gravitational forces succumb to deformation—the lithosphere is weak (a cheese analogue might be a ripe brie). Small Ar flows resist deformation and changes in crustal thickness, forming rigid blocks (think feta).
 
 To constrain time-dependence, the continuity equation is written in the form:
 
@@ -38,13 +40,17 @@ To constrain time-dependence, the continuity equation is written in the form:
 # Implementation and computation
 Equations are solved on a NxN grid (e.g. 32x32), through numerical approximations to the equations for velocity and crustal thickness. The derivative terms in the RHS of the velocity equation are approximated through centre difference schemes. To solve for the velocity field on the LHS, the interior nodes of the RHS are initially set to zero and the new velocity field is inverted for using a Poisson equation solving routine.
 
-<img src="https://user-images.githubusercontent.com/38541020/87995475-74b9c380-caa4-11ea-9c47-e6c0b5bd77ac.png" width="500" height="auto"/>
+<img src="https://user-images.githubusercontent.com/38541020/87995475-74b9c380-caa4-11ea-9c47-e6c0b5bd77ac.png" width="400" height="auto"/>
 
-Boundary conditions are applied to the velocity fields. These new velocity fields are then used in the centre difference schemes to calculate a new RHS, which is solved again to attain a new solution for the velocities (again applying boundary conditions). This new solution is applied to the old solution until the solution converges. For calculations, very small convergence parameters must be used.
+Boundary conditions are applied to the velocity fields and crustal thickness (see above figure, from [England and McKenzie (1982)](https://doi.org/10.1111/j.1365-246X.1982.tb04969.x)). These new velocity fields are then used in the centre difference schemes to calculate a new RHS, which is solved again to attain a new solution for the velocities (again applying boundary conditions). This new solution is applied to the old solution until the solution converges. For calculations, very small convergence parameters must be used.
 
 To advance the solution in time, as well as calculate changes in crustal thickness, numerical approximations to the continuity equation are used. The LHS is determined using forward differences, and the RHS is found using an 'upwind' scheme, as the form of the equation lends similarities to a material derivative. The timestep is chosen to satisfy the Courant-Friedrichs-Lewy criterion.
 
+### Performance
+This package has been updated and benchmarked since I first wrote it in 2017, and is now ~10 times faster. The figure below shows time taken to run a 0.5 million year Newtonian simulation on a 16x16 grid, over a range of Argand numbers. Left shows the old implementation, and right shows the current. Grey lines are individual samples, and red lines are medians.
+
 <img src="https://user-images.githubusercontent.com/38541020/87989771-7d57cd00-ca97-11ea-967f-e772b12c35c3.png" width="500" height="auto"/>
+
 
 # Using the package
 This example follows the script `main.m`. Further information on the functions/classes/options can be found in the headers of each file.
@@ -56,7 +62,7 @@ The constructor of class `TVSfield` is used to set up an object with default par
 thinViscousSheet = TVSfield();
 ```
 
-Default settings must be changed before creating grids and stencils.
+Default settings can be changed by accessing the properties of the object. These changes must be changed before creating the grids and stencils.
 
 ```Matlab
 thinViscousSheet.simSettings.Nx = 32;
@@ -98,7 +104,7 @@ Plots of diagnostic parameters from `plot3D()` are shown below for the Ar=1 mode
 
 
 # Animations
-Below are animations comparing the time evolution of the  previous Ar=1 and Ar=10 models. Animations are made the using the function `mainAnimation()` in `main.m`.
+Below are animations comparing the time evolution of the  previous Ar=1 and Ar=10 models (left and right are Ar=1 and Ar=10, respectively). Animations are made the using the function `mainAnimation()` in `main.m`.
 
 <img src="https://user-images.githubusercontent.com/38541020/87986639-3f0bdf00-ca92-11ea-9e81-d23afbbff34f.gif" width="500" height="auto"/><img src="https://user-images.githubusercontent.com/38541020/87987207-19cba080-ca93-11ea-9995-9f8749467be7.gif" width="500" height="auto"/>
 
