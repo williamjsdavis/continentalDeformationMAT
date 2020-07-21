@@ -13,9 +13,9 @@ The idea behind the thin viscous sheet approximation is to represent the crust a
 
 <img src="https://render.githubusercontent.com/render/math?math=p=\tau_{zz}-\int_{0}^{z}\rho g\ dz'.">
 
-Consider a level at the base of the lithosphere for isostatic balance (z=0). The vertical average of this pressure through the lithosphere and any topography gives
+For a full description of symbols used, please refer to [England and McKenzie (1982)](https://doi.org/10.1111/j.1365-246X.1982.tb04969.x). Consider a level at the base of the lithosphere for isostatic balance (z=0). The vertical average of this pressure through the lithosphere and any topography gives
 
-<img src="https://render.githubusercontent.com/render/math?math=\bar{p}=\bar{\tau}_{zz}-\frac{g \rho_c}{2L}(1-\rho_c/\rho_m)S^2+\frac{g \rho_m L}{2}.">
+<img src="https://render.githubusercontent.com/render/math?math=\bar{p}=\bar{\tau}_{zz}-\frac{g \rho_c}{2L}(1-\rho_c/\rho_m)S^2--\frac{g \rho_m L}{2}.">
 
 The term <img src="https://render.githubusercontent.com/render/math?math=\bar{\tau}_{zz}"> is calculated through the constitutive equation
 
